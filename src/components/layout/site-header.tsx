@@ -1,0 +1,109 @@
+"use client";
+
+import {Menu, X} from "lucide-react";
+import {useState} from "react";
+import {getPath} from "@/lib/routes";
+import type {Locale, StaticRouteKey} from "@/lib/types";
+import {navText, primaryNav} from "@/lib/nav-data";
+import {Button} from "@/components/ui/button";
+import {LanguageSwitcher} from "@/components/layout/language-switcher";
+
+type SiteHeaderProps = {
+  locale: Locale;
+};
+
+export function SiteHeader({locale}: SiteHeaderProps) {
+  const [open, setOpen] = useState(false);
+  const labels = navText[locale];
+  const mobileItems: StaticRouteKey[] = [...primaryNav, "contact"];
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-paper/10 bg-ink/88 backdrop-blur-xl">
+      <div className="container-shell flex min-h-20 items-center justify-between gap-4">
+        <a
+          href={getPath(locale, "home")}
+          className="group flex items-center gap-3"
+          aria-label="Fight Lab Coaching"
+          onClick={() => setOpen(false)}
+        >
+          <span className="relative grid size-10 place-items-center overflow-hidden rounded-sm border border-blood/70 bg-paper text-ink">
+            <span className="absolute inset-x-0 top-1/2 h-px bg-blood" />
+            <span className="font-display text-lg font-black">FL</span>
+          </span>
+          <span className="leading-none">
+            <span className="block font-display text-xl font-black text-paper">
+              Fight Lab
+            </span>
+            <span className="mono-label block text-chalk">coaching</span>
+          </span>
+        </a>
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+          {primaryNav.map((item) => (
+            <a
+              key={item}
+              href={getPath(locale, item)}
+              className="rounded-sm px-3 py-2 text-sm font-semibold text-paper/78 transition hover:bg-paper/8 hover:text-paper"
+            >
+              {labels[item]}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <LanguageSwitcher locale={locale} />
+          <Button asChild variant="secondary" size="sm">
+            <a href={getPath(locale, "guide")}>{labels.guide}</a>
+          </Button>
+          <Button asChild size="sm">
+            <a href={getPath(locale, "contact")}>
+              {locale === "hr" ? "Kreni" : "Start"}
+            </a>
+          </Button>
+        </div>
+
+        <button
+          className="grid min-h-11 min-w-11 place-items-center rounded-md border border-paper/20 text-paper lg:hidden"
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          aria-label={open ? "Close navigation" : "Open navigation"}
+        >
+          {open ? <X aria-hidden size={20} /> : <Menu aria-hidden size={20} />}
+        </button>
+      </div>
+
+      {open ? (
+        <div
+          id="mobile-navigation"
+          className="border-t border-paper/10 bg-ink text-paper lg:hidden"
+        >
+          <nav
+            className="container-shell grid gap-2 py-5"
+            aria-label="Mobile navigation"
+          >
+            {mobileItems.map((item) => (
+              <a
+                key={item}
+                href={getPath(locale, item)}
+                className="rounded-md border border-paper/10 px-4 py-3 text-base font-semibold"
+                onClick={() => setOpen(false)}
+              >
+                {labels[item]}
+              </a>
+            ))}
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <LanguageSwitcher locale={locale} />
+              <Button asChild className="flex-1">
+                <a href={getPath(locale, "contact")} onClick={() => setOpen(false)}>
+                  {locale === "hr" ? "Zatraži plan" : "Request plan"}
+                </a>
+              </Button>
+            </div>
+          </nav>
+        </div>
+      ) : null}
+    </header>
+  );
+}

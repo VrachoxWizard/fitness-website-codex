@@ -1,0 +1,113 @@
+---
+description: Fitness Coaching Platform technical rules, security rules, UI rules, and architecture context
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Fitness Coaching Platform Rules
+
+You are building a bilingual Croatian/English fitness, diet, health-advice and online coaching platform.
+
+## Product Purpose
+
+The platform sells:
+
+- Custom workout plans
+- Custom diet plans
+- Online coaching
+- Transformation packages
+- Monthly subscriptions
+
+The app must support:
+
+- Croatian default language
+- English language switch
+- Public SEO pages
+- Paid plans
+- Client intake questionnaire
+- User dashboard
+- Coach/admin dashboard
+- Plan delivery
+- Secure progress photo/file uploads
+- Stripe payments
+- Role-based access control
+
+## Technology Rules
+
+Use:
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui or accessible UI primitives
+- Prisma ORM
+- PostgreSQL/Supabase
+- Clerk/Auth0
+- Stripe Checkout/Billing
+- Zod
+- React Hook Form
+- TanStack Query
+- Sentry or equivalent monitoring
+
+Do not:
+
+- Hand-roll authentication
+- Expose secrets to frontend
+- Trust client-provided role/user IDs
+- Unlock paid features from frontend redirect alone
+- Store private uploads in `/public`
+- Return raw stack traces to clients
+
+## Security Rules
+
+Every protected route/action must have:
+
+1. Authentication check
+2. RBAC/ownership check
+3. Server-side validation
+4. Sanitized error handling
+5. Rate limiting where appropriate
+
+Required roles:
+
+```ts
+type Role = "guest" | "user" | "coach" | "admin";
+```
+
+## UX Rules
+
+Design should be:
+
+- Premium
+- Non-generic
+- Fitness-themed
+- Mobile-first
+- High contrast
+- Accessible
+- Conversion-focused
+- SEO-friendly
+
+Avoid generic AI-looking SaaS layouts.
+
+## Code Quality Rules
+
+- Keep pages thin.
+- Move business logic to services.
+- Move DB access to repositories.
+- Reuse components.
+- Use TypeScript strictly.
+- Use Zod at server boundaries.
+- Create loading, empty, and error states.
+- Use semantic HTML.
+- Add keyboard-accessible interactions.
+
+## React Optimization Rules
+
+- Use Server Components for mostly static/public content.
+- Use Client Components for forms, modals, dashboard filters, messages, and interactive widgets.
+- Avoid inline object/function props for memoized children.
+- Use `useMemo` only for expensive derived values.
+- Use `useCallback` only when callback identity matters.
+- Use dynamic imports for heavy admin/dashboard widgets.

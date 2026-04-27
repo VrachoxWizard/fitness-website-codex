@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  guest
+  user
+  coach
+  admin
+}
+
+enum ConsentType {
+  marketing
+  privacy
+  health_intake
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  role      Role     @default(user)
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  leads     Lead[]
+  consents  ConsentLog[]
+}
+
+model Lead {
+  id               String   @id @default(cuid())
+  userId           String?
+  name             String
+  email            String
+  phone            String?
+  goal             String
+  preferredService String
+  trainingLevel    String
+  message          String?
+  locale           String
+  intent           String
+  sourcePage       String
+  createdAt        DateTime @default(now())
+
+  user             UserProfile? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  consents         ConsentLog[]
+}
+
+model ConsentLog {
+  id             String      @id @default(cuid())
+  userId         String?
+  leadId         String?
+  type           ConsentType
+  granted        Boolean
+  locale         String
+  version        String
+  purpose        String
+  createdAt      DateTime    @default(now())
+
+  user           UserProfile? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  lead           Lead?        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorRole  Role
+  action     String
+  resource   String
+  resourceId String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
