@@ -1,10 +1,10 @@
 "use client";
 
 import {Menu, X} from "lucide-react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getPath} from "@/lib/routes";
 import type {Locale, StaticRouteKey} from "@/lib/types";
-import {navText, primaryNav} from "@/lib/nav-data";
+import {navChromeText, navText, primaryNav} from "@/lib/nav-data";
 import {Button} from "@/components/ui/button";
 import {LanguageSwitcher} from "@/components/layout/language-switcher";
 
@@ -15,7 +15,16 @@ type SiteHeaderProps = {
 export function SiteHeader({locale}: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
   const labels = navText[locale];
+  const chrome = navChromeText[locale];
   const mobileItems: StaticRouteKey[] = [...primaryNav, "contact"];
+
+  useEffect(() => {
+    document.documentElement.dataset.mobileNavOpen = String(open);
+
+    return () => {
+      delete document.documentElement.dataset.mobileNavOpen;
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-paper/10 bg-ink/88 backdrop-blur-xl">
@@ -38,7 +47,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           </span>
         </a>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label={chrome.primaryNavigation}>
           {primaryNav.map((item) => (
             <a
               key={item}
@@ -57,7 +66,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           </Button>
           <Button asChild size="sm">
             <a href={getPath(locale, "contact")}>
-              {locale === "hr" ? "Kreni" : "Start"}
+              {chrome.compactCta}
             </a>
           </Button>
         </div>
@@ -68,7 +77,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="mobile-navigation"
-          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-label={open ? chrome.closeNavigation : chrome.openNavigation}
         >
           {open ? <X aria-hidden size={20} /> : <Menu aria-hidden size={20} />}
         </button>
@@ -81,7 +90,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
         >
           <nav
             className="container-shell grid gap-2 py-5"
-            aria-label="Mobile navigation"
+            aria-label={chrome.mobileNavigation}
           >
             {mobileItems.map((item) => (
               <a
@@ -97,7 +106,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
               <LanguageSwitcher locale={locale} />
               <Button asChild className="flex-1">
                 <a href={getPath(locale, "contact")} onClick={() => setOpen(false)}>
-                  {locale === "hr" ? "Zatraži plan" : "Request plan"}
+                  {chrome.primaryCta}
                 </a>
               </Button>
             </div>

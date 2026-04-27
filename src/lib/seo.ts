@@ -11,9 +11,9 @@ export function absoluteUrl(path: string) {
   return `${siteUrl}${path === "/" ? "" : path}`;
 }
 
-export function localizedAlternates(key: StaticRouteKey) {
+export function localizedAlternates(key: StaticRouteKey, locale: Locale = "hr") {
   return {
-    canonical: absoluteUrl(getPath("hr", key)),
+    canonical: absoluteUrl(getPath(locale, key)),
     languages: {
       hr: absoluteUrl(routeMap[key].hr),
       en: absoluteUrl(routeMap[key].en),

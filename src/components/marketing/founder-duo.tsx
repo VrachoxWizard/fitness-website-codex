@@ -10,7 +10,9 @@ export function FounderDuo({locale}: {locale: Locale}) {
     <section className="section-paper py-20">
       <div className="container-shell">
         <div className="max-w-3xl">
-          <p className="mono-label text-blood">coach credibility</p>
+          <p className="mono-label text-blood">
+            {locale === "hr" ? "Trenerski kredibilitet" : "Coach credibility"}
+          </p>
           <h2 className="display-title mt-3 text-4xl sm:text-5xl">
             {locale === "hr"
               ? "Dva profila. Jedan sustav."

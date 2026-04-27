@@ -2,12 +2,15 @@
 
 import {zodResolver} from "@hookform/resolvers/zod";
 import {CheckCircle2, Loader2} from "lucide-react";
-import {useState} from "react";
-import {useForm} from "react-hook-form";
 import {
-  leadFormSchema,
-  type LeadFormInputValues
-} from "@/lib/lead";
+  cloneElement,
+  useId,
+  useMemo,
+  useState,
+  type ReactElement
+} from "react";
+import {useForm} from "react-hook-form";
+import {getLeadFormSchema, type LeadFormInputValues} from "@/lib/lead";
 import type {ConversionIntent, Locale} from "@/lib/types";
 import {Button} from "@/components/ui/button";
 
@@ -34,7 +37,17 @@ const copy = {
     submit: "Pošalji upit",
     success: "Upit je zaprimljen. Javit ćemo se s idućim korakom.",
     error: "Nešto nije prošlo. Provjeri polja i pokušaj ponovno.",
-    noMedical: "Ne šalji dijagnoze, nalaze ili osjetljive detalje u ovoj javnoj formi."
+    noMedical: "Ne šalji dijagnoze, nalaze ili osjetljive detalje u ovoj javnoj formi.",
+    options: {
+      notSure: "Nisam siguran/a",
+      nutrition: "Plan prehrane",
+      workout: "Plan treninga",
+      coaching: "Online coaching",
+      transformation: "Transformacija",
+      beginner: "Početnik",
+      intermediate: "Srednja razina",
+      advanced: "Napredno"
+    }
   },
   en: {
     title: "Short assessment",
@@ -52,12 +65,24 @@ const copy = {
     submit: "Send inquiry",
     success: "Inquiry received. We will reply with the next step.",
     error: "Something did not work. Check the fields and try again.",
-    noMedical: "Do not send diagnoses, medical files or sensitive details in this public form."
+    noMedical: "Do not send diagnoses, medical files or sensitive details in this public form.",
+    options: {
+      notSure: "Not sure",
+      nutrition: "Nutrition plan",
+      workout: "Workout plan",
+      coaching: "Online coaching",
+      transformation: "Transformation",
+      beginner: "Beginner",
+      intermediate: "Intermediate",
+      advanced: "Advanced"
+    }
   }
 };
 
 export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadFormProps) {
   const t = copy[locale];
+  const schema = useMemo(() => getLeadFormSchema(locale), [locale]);
+  const baseId = useId();
   const [serverState, setServerState] = useState<"idle" | "success" | "error">("idle");
 
   const {
@@ -65,7 +90,7 @@ export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadForm
     handleSubmit,
     formState: {errors, isSubmitting}
   } = useForm<LeadFormInputValues>({
-    resolver: zodResolver(leadFormSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       email: "",
@@ -119,40 +144,40 @@ export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadForm
       <input type="hidden" {...register("sourcePage")} value={sourcePage} />
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label={t.name} error={errors.name?.message}>
+        <Field id={`${baseId}-name`} label={t.name} error={errors.name?.message}>
           <input {...register("name")} autoComplete="name" />
         </Field>
-        <Field label={t.email} error={errors.email?.message}>
+        <Field id={`${baseId}-email`} label={t.email} error={errors.email?.message}>
           <input {...register("email")} autoComplete="email" type="email" />
         </Field>
-        <Field label={t.phone} error={errors.phone?.message}>
+        <Field id={`${baseId}-phone`} label={t.phone} error={errors.phone?.message}>
           <input {...register("phone")} autoComplete="tel" />
         </Field>
-        <Field label={t.goal} error={errors.goal?.message}>
+        <Field id={`${baseId}-goal`} label={t.goal} error={errors.goal?.message}>
           <input
             {...register("goal")}
             placeholder={locale === "hr" ? "mršavljenje, snaga, mišićna masa..." : "fat loss, strength, muscle gain..."}
           />
         </Field>
-        <Field label={t.preferredService} error={errors.preferredService?.message}>
+        <Field id={`${baseId}-service`} label={t.preferredService} error={errors.preferredService?.message}>
           <select {...register("preferredService")}>
-            <option value="not-sure">{locale === "hr" ? "Nisam siguran/a" : "Not sure"}</option>
-            <option value="plan-prehrane">{locale === "hr" ? "Plan prehrane" : "Nutrition plan"}</option>
-            <option value="plan-treninga">{locale === "hr" ? "Plan treninga" : "Workout plan"}</option>
-            <option value="online-coaching">Online coaching</option>
-            <option value="transformacija">{locale === "hr" ? "Transformacija" : "Transformation"}</option>
+            <option value="not-sure">{t.options.notSure}</option>
+            <option value="plan-prehrane">{t.options.nutrition}</option>
+            <option value="plan-treninga">{t.options.workout}</option>
+            <option value="online-coaching">{t.options.coaching}</option>
+            <option value="transformacija">{t.options.transformation}</option>
           </select>
         </Field>
-        <Field label={t.trainingLevel} error={errors.trainingLevel?.message}>
+        <Field id={`${baseId}-level`} label={t.trainingLevel} error={errors.trainingLevel?.message}>
           <select {...register("trainingLevel")}>
-            <option value="beginner">{locale === "hr" ? "Početnik" : "Beginner"}</option>
-            <option value="intermediate">{locale === "hr" ? "Srednja razina" : "Intermediate"}</option>
-            <option value="advanced">{locale === "hr" ? "Napredno" : "Advanced"}</option>
+            <option value="beginner">{t.options.beginner}</option>
+            <option value="intermediate">{t.options.intermediate}</option>
+            <option value="advanced">{t.options.advanced}</option>
           </select>
         </Field>
       </div>
 
-      <Field label={t.message} error={errors.message?.message} className="mt-4">
+      <Field id={`${baseId}-message`} label={t.message} error={errors.message?.message} className="mt-4">
         <textarea {...register("message")} rows={5} />
       </Field>
 
@@ -161,21 +186,22 @@ export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadForm
       </p>
 
       <div className="mt-5 grid gap-3 text-sm text-paper/76">
-        <label className="flex gap-3">
-          <input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.privacy")} />
-          <span>{t.privacy}</span>
-        </label>
-        {errors.consent?.privacy ? (
-          <p className="text-sm text-blood-bright">{errors.consent.privacy.message}</p>
-        ) : null}
-        <label className="flex gap-3">
-          <input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.marketing")} />
-          <span>{t.marketing}</span>
-        </label>
-        <label className="flex gap-3">
-          <input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.healthIntake")} />
-          <span>{t.health}</span>
-        </label>
+        <CheckboxField
+          id={`${baseId}-privacy`}
+          label={t.privacy}
+          error={errors.consent?.privacy?.message}
+          input={<input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.privacy")} />}
+        />
+        <CheckboxField
+          id={`${baseId}-marketing`}
+          label={t.marketing}
+          input={<input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.marketing")} />}
+        />
+        <CheckboxField
+          id={`${baseId}-health`}
+          label={t.health}
+          input={<input className="mt-1 size-4 accent-blood" type="checkbox" {...register("consent.healthIntake")} />}
+        />
       </div>
 
       <Button className="mt-6 w-full" disabled={isSubmitting} type="submit">
@@ -184,13 +210,19 @@ export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadForm
       </Button>
 
       {serverState === "success" ? (
-        <p className="mt-4 flex items-center gap-2 rounded-sm border border-lab-blue/30 bg-lab-blue/10 px-3 py-2 text-sm text-paper">
+        <p
+          className="mt-4 flex items-center gap-2 rounded-sm border border-lab-blue/30 bg-lab-blue/10 px-3 py-2 text-sm text-paper"
+          role="status"
+        >
           <CheckCircle2 aria-hidden size={18} />
           {t.success}
         </p>
       ) : null}
       {serverState === "error" ? (
-        <p className="mt-4 rounded-sm border border-blood/40 bg-blood/15 px-3 py-2 text-sm text-paper">
+        <p
+          className="mt-4 rounded-sm border border-blood/40 bg-blood/15 px-3 py-2 text-sm text-paper"
+          role="alert"
+        >
           {t.error}
         </p>
       ) : null}
@@ -198,21 +230,72 @@ export function LeadForm({locale, sourcePage, intent = "consultation"}: LeadForm
   );
 }
 
+type FieldControlProps = {
+  id?: string;
+  "aria-invalid"?: boolean;
+  "aria-describedby"?: string;
+};
+
 type FieldProps = {
+  id: string;
   label: string;
   error?: string;
-  children: React.ReactElement;
+  children: ReactElement<FieldControlProps>;
   className?: string;
 };
 
-function Field({label, error, children, className}: FieldProps) {
+function Field({id, label, error, children, className}: FieldProps) {
+  const errorId = `${id}-error`;
+  const control = cloneElement(children, {
+    id,
+    "aria-invalid": error ? true : undefined,
+    "aria-describedby": error ? errorId : undefined
+  });
+
   return (
-    <label className={className}>
+    <label className={className} htmlFor={id}>
       <span className="mb-2 block text-sm font-bold text-paper/78">{label}</span>
-      <span className="block [&_input]:min-h-11 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-paper/14 [&_input]:bg-ink/70 [&_input]:px-3 [&_input]:text-paper [&_select]:min-h-11 [&_select]:w-full [&_select]:rounded-md [&_select]:border [&_select]:border-paper/14 [&_select]:bg-ink/70 [&_select]:px-3 [&_select]:text-paper [&_textarea]:w-full [&_textarea]:rounded-md [&_textarea]:border [&_textarea]:border-paper/14 [&_textarea]:bg-ink/70 [&_textarea]:p-3 [&_textarea]:text-paper">
-        {children}
+      <span className="block [&_input]:min-h-11 [&_input]:w-full [&_input]:rounded-md [&_input]:border [&_input]:border-paper/14 [&_input]:bg-ink/70 [&_input]:px-3 [&_input]:text-paper [&_input]:outline-none [&_input]:transition [&_input]:focus-visible:border-lab-blue [&_select]:min-h-11 [&_select]:w-full [&_select]:rounded-md [&_select]:border [&_select]:border-paper/14 [&_select]:bg-ink/70 [&_select]:px-3 [&_select]:text-paper [&_select]:outline-none [&_select]:transition [&_select]:focus-visible:border-lab-blue [&_textarea]:w-full [&_textarea]:rounded-md [&_textarea]:border [&_textarea]:border-paper/14 [&_textarea]:bg-ink/70 [&_textarea]:p-3 [&_textarea]:text-paper [&_textarea]:outline-none [&_textarea]:transition [&_textarea]:focus-visible:border-lab-blue">
+        {control}
       </span>
-      {error ? <span className="mt-2 block text-sm text-blood-bright">{error}</span> : null}
+      {error ? (
+        <span id={errorId} className="mt-2 block text-sm text-blood-bright">
+          {error}
+        </span>
+      ) : null}
     </label>
+  );
+}
+
+function CheckboxField({
+  id,
+  label,
+  input,
+  error
+}: {
+  id: string;
+  label: string;
+  input: ReactElement<FieldControlProps>;
+  error?: string;
+}) {
+  const errorId = `${id}-error`;
+  const control = cloneElement(input, {
+    id,
+    "aria-invalid": error ? true : undefined,
+    "aria-describedby": error ? errorId : undefined
+  });
+
+  return (
+    <div>
+      <label className="flex gap-3" htmlFor={id}>
+        {control}
+        <span>{label}</span>
+      </label>
+      {error ? (
+        <p id={errorId} className="mt-2 text-sm text-blood-bright">
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

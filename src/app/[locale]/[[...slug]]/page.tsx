@@ -20,7 +20,7 @@ import {
   pageMeta,
   sharedFaq
 } from "@/lib/site-data";
-import type {Locale, StaticRouteKey} from "@/lib/types";
+import type {FaqItem, Locale, StaticRouteKey} from "@/lib/types";
 import {localizedAlternates, pageTitle} from "@/lib/seo";
 
 type PageProps = {
@@ -34,11 +34,11 @@ export async function generateMetadata({params}: PageProps): Promise<Metadata> {
   return {
     title: pageTitle(meta.title, locale),
     description: meta.description,
-    alternates: localizedAlternates(routeKey),
+    alternates: localizedAlternates(routeKey, locale),
     openGraph: {
       title: pageTitle(meta.title, locale),
       description: meta.description,
-      url: localizedAlternates(routeKey).languages[locale],
+      url: localizedAlternates(routeKey, locale).languages[locale],
       siteName: "Fight Lab Coaching",
       locale: locale === "hr" ? "hr_HR" : "en_US",
       type: "website",
@@ -148,20 +148,23 @@ function localizedPathToSlug(locale: Locale, key: StaticRouteKey) {
 
 function pageJsonLd(locale: Locale, routeKey: StaticRouteKey) {
   const meta = pageMeta[routeKey][locale];
-  const url = localizedAlternates(routeKey).languages[locale];
+  const url = localizedAlternates(routeKey, locale).languages[locale];
 
   if (routeKey === "home") {
-    return {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      name: "Fight Lab Coaching",
-      url,
-      inLanguage: locale
-    };
+    return [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "Fight Lab Coaching",
+        url,
+        inLanguage: locale
+      },
+      faqJsonLd(locale, sharedFaq[locale])
+    ];
   }
 
   if (routeKey === "services" || meta.kind === "service") {
-    return {
+    const serviceJsonLd = {
       "@context": "https://schema.org",
       "@type": "Service",
       name: meta.title,
@@ -173,6 +176,15 @@ function pageJsonLd(locale: Locale, routeKey: StaticRouteKey) {
       },
       url
     };
+
+    if (meta.kind === "service") {
+      const service = getServiceByRoute(locale, routeKey);
+      return service
+        ? [serviceJsonLd, faqJsonLd(locale, [...service.faq, ...sharedFaq[locale].slice(0, 2)])]
+        : serviceJsonLd;
+    }
+
+    return [serviceJsonLd, faqJsonLd(locale, sharedFaq[locale])];
   }
 
   return {
@@ -181,8 +193,16 @@ function pageJsonLd(locale: Locale, routeKey: StaticRouteKey) {
     name: meta.title,
     description: meta.description,
     url,
+    inLanguage: locale
+  };
+}
+
+function faqJsonLd(locale: Locale, items: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     inLanguage: locale,
-    mainEntity: sharedFaq[locale].map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {

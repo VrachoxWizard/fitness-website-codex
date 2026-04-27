@@ -1,6 +1,6 @@
 import type {Locale} from "@/lib/types";
 import {getPath} from "@/lib/routes";
-import {navText} from "@/lib/nav-data";
+import {navChromeText, navText} from "@/lib/nav-data";
 
 type FooterProps = {
   locale: Locale;
@@ -8,6 +8,7 @@ type FooterProps = {
 
 export function Footer({locale}: FooterProps) {
   const labels = navText[locale];
+  const chrome = navChromeText[locale];
   const legalText =
     locale === "hr"
       ? "Sadržaj je namijenjen fitness edukaciji i coachingu, ne dijagnozi ili liječenju."
@@ -23,7 +24,7 @@ export function Footer({locale}: FooterProps) {
           </p>
         </div>
         <div>
-          <p className="mono-label text-lab-blue">Navigation</p>
+          <p className="mono-label text-lab-blue">{chrome.footerNavigation}</p>
           <div className="mt-4 grid gap-2 text-sm text-paper/76">
             {(["services", "packages", "about", "results", "blog", "contact"] as const).map(
               (item) => (
@@ -35,7 +36,7 @@ export function Footer({locale}: FooterProps) {
           </div>
         </div>
         <div>
-          <p className="mono-label text-lab-blue">Legal</p>
+          <p className="mono-label text-lab-blue">{chrome.footerLegal}</p>
           <div className="mt-4 grid gap-2 text-sm text-paper/76">
             <a href={getPath(locale, "privacy")} className="hover:text-paper">
               {labels.privacy}

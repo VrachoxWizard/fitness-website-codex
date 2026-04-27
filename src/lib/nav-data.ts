@@ -42,3 +42,28 @@ export const navText: Record<Locale, Record<StaticRouteKey, string>> = {
     healthDisclaimer: "Health disclaimer"
   }
 };
+
+export const navChromeText = {
+  hr: {
+    primaryNavigation: "Glavna navigacija",
+    mobileNavigation: "Mobilna navigacija",
+    openNavigation: "Otvori navigaciju",
+    closeNavigation: "Zatvori navigaciju",
+    footerNavigation: "Navigacija",
+    footerLegal: "Pravno",
+    primaryCta: "Zatraži personalizirani plan",
+    compactCta: "Zatraži plan",
+    secondaryCta: "Usporedi pakete"
+  },
+  en: {
+    primaryNavigation: "Primary navigation",
+    mobileNavigation: "Mobile navigation",
+    openNavigation: "Open navigation",
+    closeNavigation: "Close navigation",
+    footerNavigation: "Navigation",
+    footerLegal: "Legal",
+    primaryCta: "Request a custom plan",
+    compactCta: "Request plan",
+    secondaryCta: "Compare packages"
+  }
+} satisfies Record<Locale, Record<string, string>>;

@@ -20,17 +20,16 @@ export function CredibilityStrip({locale}: {locale: Locale}) {
 
   return (
     <section className="section-dark border-y border-paper/10 py-8">
-      <div className="container-shell grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="container-shell grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-4">
         {items.map(([title, text], index) => {
           const Icon = icons[index];
           return (
-            <article
-              className="rounded-md border border-paper/10 bg-paper/5 p-5"
-              key={title}
-            >
-              <Icon aria-hidden className="text-lab-blue" size={22} />
-              <h2 className="mt-4 font-display text-2xl font-black">{title}</h2>
-              <p className="mt-2 text-sm leading-6 text-paper/68">{text}</p>
+            <article className="flex gap-4 border-l border-paper/12 pl-4" key={title}>
+              <Icon aria-hidden className="mt-1 shrink-0 text-lab-blue" size={22} />
+              <div>
+                <h2 className="font-display text-2xl font-black">{title}</h2>
+                <p className="mt-2 text-sm leading-6 text-paper/68">{text}</p>
+              </div>
             </article>
           );
         })}

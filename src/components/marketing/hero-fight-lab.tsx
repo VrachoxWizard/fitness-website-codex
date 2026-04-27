@@ -4,6 +4,7 @@ import type {Locale} from "@/lib/types";
 import {getPath} from "@/lib/routes";
 import {Button} from "@/components/ui/button";
 import {homeContent} from "@/lib/site-data";
+import {navChromeText} from "@/lib/nav-data";
 
 type HeroFightLabProps = {
   locale: Locale;
@@ -11,6 +12,7 @@ type HeroFightLabProps = {
 
 export function HeroFightLab({locale}: HeroFightLabProps) {
   const copy = homeContent[locale];
+  const chrome = navChromeText[locale];
 
   return (
     <section className="section-dark editorial-grid texture-noise relative overflow-hidden">
@@ -30,7 +32,7 @@ export function HeroFightLab({locale}: HeroFightLabProps) {
           <p className="mono-label mb-5 inline-flex rounded-sm border border-lab-blue/40 bg-lab-blue/10 px-3 py-2 text-lab-blue">
             {copy.eyebrow}
           </p>
-          <h1 className="display-title text-3xl text-paper-soft sm:text-6xl lg:text-7xl">
+          <h1 className="display-title page-title max-w-4xl text-paper-soft">
             {copy.title}
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-paper/86">
@@ -44,7 +46,7 @@ export function HeroFightLab({locale}: HeroFightLabProps) {
               </a>
             </Button>
             <Button asChild variant="secondary" size="lg">
-              <a href={getPath(locale, "packages")}>{copy.secondaryCta}</a>
+              <a href={getPath(locale, "packages")}>{chrome.secondaryCta}</a>
             </Button>
           </div>
           <div className="mt-6 grid grid-cols-2 gap-3">

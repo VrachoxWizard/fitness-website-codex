@@ -15,7 +15,9 @@ export function FAQAccordion({locale, items, title}: FAQAccordionProps) {
     <section className="section-paper py-20">
       <div className="container-shell grid gap-8 lg:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <p className="mono-label text-blood">faq</p>
+          <p className="mono-label text-blood">
+            {locale === "hr" ? "Pitanja" : "FAQ"}
+          </p>
           <h2 className="display-title mt-3 text-4xl sm:text-5xl">
             {title ?? (locale === "hr" ? "Pitanja prije odluke" : "Questions before deciding")}
           </h2>
