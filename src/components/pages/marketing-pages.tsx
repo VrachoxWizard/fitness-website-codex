@@ -176,7 +176,7 @@ export function ServiceDetailPage({
         />
       </MarketingSection>
       <section className="section-dark py-14">
-        <div className="container-shell rounded-md border border-warning/30 bg-warning/10 p-6">
+        <div className="container-shell rounded-md border border-warning/30 bg-warning/10 p-6 shadow-soft transition-all duration-300 ease-premium hover:shadow-hard">
           <p className="mono-label text-warning">
             {locale === "hr" ? "Zdravstvena granica" : "Health boundary"}
           </p>
@@ -276,7 +276,7 @@ export function ResultsPage({locale}: {locale: Locale}) {
         />
         <div className="grid gap-4">
           {rules.map((item) => (
-            <p key={item} className="border-l border-blood/35 bg-paper-soft p-5 leading-7 text-ink/72">
+            <p key={item} className="border-l border-blood/35 bg-paper-soft p-5 leading-7 text-ink/72 transition-all duration-300 ease-premium hover:border-blood hover:shadow-soft">
               {item}
             </p>
           ))}
@@ -335,7 +335,7 @@ export function BlogPostPage({locale, post}: {locale: Locale; post: BlogPost}) {
               {paragraph}
             </p>
           ))}
-          <div className="mt-10 rounded-md border border-warning/30 bg-warning/10 p-5">
+          <div className="mt-10 rounded-md border border-warning/30 bg-warning/10 p-5 transition-all duration-300 ease-premium hover:shadow-soft">
             <p className="font-bold">
               {locale === "hr" ? "Zdravstvena napomena" : "Health disclaimer"}
             </p>
@@ -359,7 +359,7 @@ export function BlogPostPage({locale, post}: {locale: Locale; post: BlogPost}) {
             <p className="mono-label text-blood">{sectionLabels[locale].related}</p>
             <div className="mt-4 grid gap-2 text-sm font-bold">
               {post.relatedRoutes.map((route) => (
-                <a key={route} href={getPath(locale, route)} className="text-blood hover:text-ink">
+                <a key={route} href={getPath(locale, route)} className="text-blood transition-colors duration-300 ease-premium hover:text-ink">
                   {pageMeta[route][locale].title}
                 </a>
               ))}
@@ -456,7 +456,7 @@ export function LegalPage({locale, routeKey}: {locale: Locale; routeKey: StaticR
       />
       <MarketingSection tone="paper" className="py-16" innerClassName="max-w-4xl">
         {blocks.map((block) => (
-          <section key={block.title} className="mb-10 rounded-md border border-ink/12 bg-paper-soft p-6">
+          <section key={block.title} className="mb-10 rounded-md border border-ink/12 bg-paper-soft p-6 transition-all duration-300 ease-premium hover:-translate-y-1 hover:shadow-soft">
             <h2 className="font-display text-3xl font-black">{block.title}</h2>
             <p className="mt-4 leading-8 text-ink/70">{block.text}</p>
           </section>
@@ -530,7 +530,7 @@ function QuickChoiceBand({locale}: {locale: Locale}) {
             <a
               key={service.slug}
               href={getPath(locale, service.routeKey)}
-              className="rounded-sm border border-paper/12 bg-paper/6 px-3 py-2 text-sm font-bold text-paper/78 transition hover:border-lab-blue/50 hover:text-paper"
+              className="rounded-sm border border-paper/12 bg-paper/6 px-3 py-2 text-sm font-bold text-paper/78 transition-all duration-300 ease-premium hover:-translate-y-[1px] hover:bg-paper/10 hover:border-lab-blue/50 hover:text-paper"
             >
               {service.shortTitle}
             </a>
@@ -555,7 +555,7 @@ function ProcessSection({locale}: {locale: Locale}) {
       />
       <div className="mt-10 grid gap-4 md:grid-cols-3">
         {copy.process.map((step, index) => (
-          <article className="border-l border-paper/14 pl-5" key={step.title}>
+          <article className="group border-l border-paper/14 pl-5 transition-all duration-300 ease-premium hover:border-lab-blue/50" key={step.title}>
             <p className="mono-label text-lab-blue">0{index + 1}</p>
             <h3 className="mt-5 font-display text-3xl font-black text-balance">{step.title}</h3>
             <p className="mt-4 leading-7 text-paper/70">{step.text}</p>
@@ -581,7 +581,7 @@ function ObjectionSection({locale}: {locale: Locale}) {
       />
       <div className="grid gap-4">
         {copy.objections.map((item) => (
-          <p key={item} className="border-l border-blood/35 bg-paper-soft p-5 leading-7 text-ink/72">
+          <p key={item} className="border-l border-blood/35 bg-paper-soft p-5 leading-7 text-ink/72 transition-all duration-300 ease-premium hover:border-blood hover:shadow-soft">
             {item}
           </p>
         ))}
@@ -669,9 +669,9 @@ function ArticleCard({locale, post}: {locale: Locale; post: BlogPost}) {
   return (
     <a
       href={href}
-      className="group rounded-md border border-ink/12 bg-paper-soft p-6 shadow-soft transition hover:-translate-y-1 hover:border-blood/40 focus-visible:outline-lab-blue"
+      className="group rounded-md border border-ink/12 bg-paper-soft p-6 shadow-soft transition-all duration-300 ease-premium hover:-translate-y-1 hover:border-blood/40 hover:shadow-hard focus-visible:outline-lab-blue"
     >
-      <FileText aria-hidden className="text-blood" size={26} />
+      <FileText aria-hidden className="text-blood transition-transform duration-300 ease-premium group-hover:scale-110" size={26} />
       <p className="mono-label mt-5 text-iron">
         {post.category} / {post.readingTime}
       </p>
@@ -679,7 +679,7 @@ function ArticleCard({locale, post}: {locale: Locale; post: BlogPost}) {
       <p className="mt-4 text-sm leading-7 text-ink/68">{post.description}</p>
       <span className="mt-6 inline-flex items-center gap-2 text-sm font-black text-blood">
         {locale === "hr" ? "Pročitaj članak" : "Read article"}
-        <ArrowRight aria-hidden size={16} />
+        <ArrowRight aria-hidden size={16} className="transition-transform duration-300 ease-premium group-hover:translate-x-1" />
       </span>
     </a>
   );

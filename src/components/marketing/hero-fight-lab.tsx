@@ -27,7 +27,7 @@ export function HeroFightLab({locale}: HeroFightLabProps) {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/88 to-ink" />
       </div>
-      <div className="container-shell relative z-10 grid gap-10 py-8 lg:min-h-[calc(86svh-80px)] lg:grid-cols-[0.95fr_1.05fr] lg:py-14">
+      <div className="container-shell relative z-10 grid gap-10 py-12 lg:min-h-[calc(86svh-80px)] lg:grid-cols-[0.95fr_1.05fr] lg:py-16">
         <div className="soft-reveal max-w-3xl">
           <p className="mono-label mb-5 inline-flex rounded-sm border border-lab-blue/40 bg-lab-blue/10 px-3 py-2 text-lab-blue">
             {copy.eyebrow}
@@ -79,14 +79,14 @@ export function HeroFightLab({locale}: HeroFightLabProps) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
           </div>
-          <div className="absolute bottom-8 left-0 max-w-sm rounded-md border border-paper/15 bg-ink/88 p-5 shadow-soft backdrop-blur">
+          <div className="absolute bottom-8 left-0 max-w-sm rounded-md border border-paper/15 bg-ink/80 p-5 shadow-soft backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-hard">
             <div className="mb-3 flex items-center gap-2 text-lab-blue">
               <Activity aria-hidden size={18} />
               <span className="mono-label">coach note</span>
             </div>
             <p className="text-sm leading-6 text-paper/80">{copy.labNote}</p>
           </div>
-          <div className="absolute right-0 top-10 hidden rounded-md border border-blood/50 bg-blood/18 p-4 text-paper shadow-soft md:block">
+          <div className="absolute right-0 top-10 hidden rounded-md border border-blood/40 bg-blood/10 p-4 text-paper shadow-soft backdrop-blur-md transition-all duration-500 hover:-translate-y-1 hover:shadow-hard md:block">
             <p className="mono-label text-paper/68">signal</p>
             <p className="mt-2 font-display text-3xl font-black">15+</p>
             <p className="text-xs text-paper/70">

@@ -24,8 +24,8 @@ export function CredibilityStrip({locale}: {locale: Locale}) {
         {items.map(([title, text], index) => {
           const Icon = icons[index];
           return (
-            <article className="flex gap-4 border-l border-paper/12 pl-4" key={title}>
-              <Icon aria-hidden className="mt-1 shrink-0 text-lab-blue" size={22} />
+            <article className="group flex gap-4 border-l border-paper/12 pl-4 transition-all duration-300 ease-premium hover:border-lab-blue/50" key={title}>
+              <Icon aria-hidden className="mt-1 shrink-0 text-lab-blue transition-transform duration-300 ease-premium group-hover:scale-110" size={22} />
               <div>
                 <h2 className="font-display text-2xl font-black">{title}</h2>
                 <p className="mt-2 text-sm leading-6 text-paper/68">{text}</p>

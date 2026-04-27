@@ -27,7 +27,7 @@ export function FAQAccordion({locale, items, title}: FAQAccordionProps) {
             <Accordion.Item
               value={`item-${index}`}
               key={item.question}
-              className="rounded-md border border-ink/12 bg-paper-soft"
+              className="rounded-md border border-ink/12 bg-paper-soft transition-all duration-300 ease-premium hover:shadow-soft"
             >
               <Accordion.Header>
                 <Accordion.Trigger className="group flex w-full items-center justify-between gap-4 px-5 py-5 text-left font-display text-xl font-black">
@@ -35,7 +35,7 @@ export function FAQAccordion({locale, items, title}: FAQAccordionProps) {
                   <ChevronDown
                     aria-hidden
                     size={18}
-                    className="shrink-0 transition group-data-[state=open]:rotate-180"
+                    className="shrink-0 transition-transform duration-300 ease-premium group-data-[state=open]:rotate-180"
                   />
                 </Accordion.Trigger>
               </Accordion.Header>

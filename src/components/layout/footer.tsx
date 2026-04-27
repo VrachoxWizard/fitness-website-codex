@@ -38,13 +38,13 @@ export function Footer({locale}: FooterProps) {
         <div>
           <p className="mono-label text-lab-blue">{chrome.footerLegal}</p>
           <div className="mt-4 grid gap-2 text-sm text-paper/76">
-            <a href={getPath(locale, "privacy")} className="hover:text-paper">
+            <a href={getPath(locale, "privacy")} className="transition-colors duration-300 ease-premium hover:text-paper">
               {labels.privacy}
             </a>
-            <a href={getPath(locale, "terms")} className="hover:text-paper">
+            <a href={getPath(locale, "terms")} className="transition-colors duration-300 ease-premium hover:text-paper">
               {labels.terms}
             </a>
-            <a href={getPath(locale, "healthDisclaimer")} className="hover:text-paper">
+            <a href={getPath(locale, "healthDisclaimer")} className="transition-colors duration-300 ease-premium hover:text-paper">
               {labels.healthDisclaimer}
             </a>
           </div>

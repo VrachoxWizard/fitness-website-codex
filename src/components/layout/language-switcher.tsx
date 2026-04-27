@@ -32,7 +32,7 @@ export function LanguageSwitcher({locale}: LanguageSwitcherProps) {
   return (
     <a
       ref={linkRef}
-      className="mono-label rounded-sm border border-current/20 px-3 py-2 text-current/80 transition hover:border-current/50 hover:text-current"
+      className="mono-label rounded-sm border border-current/20 px-3 py-2 text-current/80 transition-all duration-300 ease-premium hover:border-current/50 hover:bg-current/5 hover:text-current focus-visible:outline-lab-blue"
       href={href}
       onClick={handleClick}
       aria-label={locale === "hr" ? "Prebaci na engleski" : "Switch to Croatian"}

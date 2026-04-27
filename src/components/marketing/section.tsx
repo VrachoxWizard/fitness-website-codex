@@ -91,11 +91,11 @@ export function MarketingCard({
   return (
     <Comp
       className={cn(
-        "rounded-md border p-5 transition duration-200 md:p-6",
+        "rounded-md border p-5 transition-all duration-300 ease-premium md:p-6 hover:shadow-soft hover:-translate-y-1",
         tone === "dark"
-          ? "border-paper/12 bg-paper/6 text-paper"
+          ? "border-paper/12 bg-paper/6 text-paper backdrop-blur-md"
           : "border-ink/12 bg-paper-soft text-ink",
-        highlighted && "border-blood bg-paper text-ink shadow-soft",
+        highlighted && "border-blood bg-paper text-ink shadow-hard hover:shadow-hard",
         className
       )}
     >
@@ -116,7 +116,7 @@ export function ProofChip({children, tone = "dark", className}: ProofChipProps) 
       className={cn(
         "inline-flex items-center rounded-sm border px-3 py-2 text-xs font-bold leading-5",
         tone === "dark"
-          ? "border-paper/12 bg-paper/6 text-paper/72"
+          ? "border-paper/12 bg-paper/6 text-paper/72 backdrop-blur-md"
           : "border-ink/10 bg-ink/5 text-ink/70",
         className
       )}

@@ -6,6 +6,7 @@ import {getPath} from "@/lib/routes";
 import type {Locale, StaticRouteKey} from "@/lib/types";
 import {navChromeText, navText, primaryNav} from "@/lib/nav-data";
 import {Button} from "@/components/ui/button";
+import {IconButton} from "@/components/ui/icon-button";
 import {LanguageSwitcher} from "@/components/layout/language-switcher";
 
 type SiteHeaderProps = {
@@ -31,7 +32,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
       <div className="container-shell flex min-h-20 items-center justify-between gap-4">
         <a
           href={getPath(locale, "home")}
-          className="group flex items-center gap-3"
+          className="group flex items-center gap-3 transition-opacity duration-300 hover:opacity-85"
           aria-label="Fight Lab Coaching"
           onClick={() => setOpen(false)}
         >
@@ -43,7 +44,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
             <span className="block font-display text-xl font-black text-paper">
               Fight Lab
             </span>
-            <span className="mono-label block text-chalk">coaching</span>
+            <span className="mono-label block font-bold text-chalk">coaching</span>
           </span>
         </a>
 
@@ -52,7 +53,7 @@ export function SiteHeader({locale}: SiteHeaderProps) {
             <a
               key={item}
               href={getPath(locale, item)}
-              className="rounded-sm px-3 py-2 text-sm font-semibold text-paper/78 transition hover:bg-paper/8 hover:text-paper"
+              className="rounded-sm px-3 py-2 text-sm font-semibold text-paper/78 transition-all duration-300 ease-premium hover:bg-paper/8 hover:text-paper"
             >
               {labels[item]}
             </a>
@@ -71,16 +72,15 @@ export function SiteHeader({locale}: SiteHeaderProps) {
           </Button>
         </div>
 
-        <button
-          className="grid min-h-11 min-w-11 place-items-center rounded-md border border-paper/20 text-paper lg:hidden"
-          type="button"
+        <IconButton
+          className="lg:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-expanded={open}
           aria-controls="mobile-navigation"
           aria-label={open ? chrome.closeNavigation : chrome.openNavigation}
         >
           {open ? <X aria-hidden size={20} /> : <Menu aria-hidden size={20} />}
-        </button>
+        </IconButton>
       </div>
 
       {open ? (

@@ -4,6 +4,7 @@ import {usePathname} from "next/navigation";
 import type {Locale} from "@/lib/types";
 import {getPath, getStaticRouteByLocalizedPath, normalizePath} from "@/lib/routes";
 import {navChromeText} from "@/lib/nav-data";
+import {Button} from "@/components/ui/button";
 
 export function StickyMobileCTA({locale}: {locale: Locale}) {
   const pathname = usePathname();
@@ -21,12 +22,11 @@ export function StickyMobileCTA({locale}: {locale: Locale}) {
 
   return (
     <div className="sticky-mobile-cta fixed inset-x-0 bottom-0 z-40 border-t border-paper/20 bg-ink/92 px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl lg:hidden">
-      <a
-        href={getPath(locale, "contact")}
-        className="flex min-h-12 items-center justify-center rounded-md bg-blood px-4 text-center text-sm font-black leading-5 text-paper-soft shadow-soft"
-      >
-        {navChromeText[locale].primaryCta}
-      </a>
+      <Button asChild size="lg" className="w-full">
+        <a href={getPath(locale, "contact")}>
+          {navChromeText[locale].primaryCta}
+        </a>
+      </Button>
     </div>
   );
 }

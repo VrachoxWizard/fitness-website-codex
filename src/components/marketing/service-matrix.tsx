@@ -29,7 +29,7 @@ export function ServiceMatrix({locale}: {locale: Locale}) {
             key={service.slug}
             href={getPath(locale, service.routeKey)}
             aria-label={`${service.title}: ${service.primaryCta}`}
-            className="group flex min-h-[320px] flex-col justify-between rounded-md border border-ink/12 bg-paper-soft p-6 shadow-soft transition hover:-translate-y-1 hover:border-blood/45 hover:shadow-hard focus-visible:outline-lab-blue"
+            className="group flex min-h-[320px] flex-col justify-between rounded-md border border-ink/12 bg-paper-soft p-6 shadow-soft transition-all duration-300 ease-premium hover:-translate-y-1 hover:border-blood/45 hover:shadow-hard focus-visible:outline-lab-blue"
           >
             <div>
               <p className="mono-label text-iron">
@@ -55,7 +55,7 @@ export function ServiceMatrix({locale}: {locale: Locale}) {
             </div>
             <span className="mt-8 inline-flex items-center gap-2 text-sm font-black text-blood">
               {service.primaryCta}
-              <ArrowUpRight aria-hidden size={18} />
+              <ArrowUpRight aria-hidden size={18} className="transition-transform duration-300 ease-premium group-hover:translate-x-1 group-hover:-translate-y-1" />
             </span>
           </a>
         ))}
